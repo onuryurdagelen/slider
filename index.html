@@ -87,13 +87,30 @@
         link: "http://www.arabalar.com.tr/honda/civic/2018/1-6-elegance",
         description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum alias aut eaque nulla error quod nesciunt quos veniam vitae, numquam cum repellendus explicabo, magnam libero natus illo? Eos, laboriosam animi?",
       },
+      {
+        name: "HONDA CIVIC",
+        image: "img/istockphoto-152143795-1024x1024.jpg",
+        link: "http://www.arabalar.com.tr/honda/civic/2018/1-6-elegance",
+        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum alias aut eaque nulla error quod nesciunt quos veniam vitae, numquam cum repellendus explicabo, magnam libero natus illo? Eos, laboriosam animi?",
+      },
+      {
+        name: "HONDA CIVIC",
+        image: "img/istockphoto-152143795-1024x1024.jpg",
+        link: "http://www.arabalar.com.tr/honda/civic/2018/1-6-elegance",
+        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum alias aut eaque nulla error quod nesciunt quos veniam vitae, numquam cum repellendus explicabo, magnam libero natus illo? Eos, laboriosam animi?",
+      },
+      {
+        name: "HONDA CIVIC",
+        image: "img/istockphoto-152143795-1024x1024.jpg",
+        link: "http://www.arabalar.com.tr/honda/civic/2018/1-6-elegance",
+        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum alias aut eaque nulla error quod nesciunt quos veniam vitae, numquam cum repellendus explicabo, magnam libero natus illo? Eos, laboriosam animi?",
+      }
     ];
 
     const sliderMain = document.querySelector("#slider-main");
     const leftArrow = document.querySelector(".fa-arrow-circle-left");
     // console.log(leftArrow);
     const rightArrow = document.querySelector(".fa-arrow-circle-right");
-    console.log(rightArrow);
 
     models.forEach((element) => {
       sliderMain.innerHTML += `
@@ -112,63 +129,84 @@
 
     var l = 0;
 
-    leftArrow.style.display = "none";
+    // leftArrow.style.display = "none";
 
+    count = 0;
+    tempCount = 0;
+    itemWidth = 0;
+
+    for(var k of items)
+    {
+      itemWidth += parseInt(k.clientWidth) +
+       parseInt(window.getComputedStyle(k).marginLeft) + 
+      parseInt(window.getComputedStyle(k).marginRight) + 
+      parseInt(window.getComputedStyle(k).paddingLeft) + 
+      parseInt(window.getComputedStyle(k).paddingRight);
+
+      if(window.screen.width >= itemWidth)
+        {
+          tempCount++;
+          console.log("sayı: "+count);
+        }
+      
+      // console.log("width: "+itemWidth);
+    }
+    count = tempCount;
+
+    console.log("length: "+items.length);
     // leftArrow.style.display = "none";
     function moveRight() {
+      count++;
       l++;
-      console.log(l);
+      console.log("count: "+count);
+      console.log("l: "+l);
       for (var i of items) {
-        const marginValues =
-          parseInt(window.getComputedStyle(i).marginLeft) +
-          parseInt(window.getComputedStyle(i).marginRight);
-        if (l == 0) {
-          i.style.left = "0px";
-        }
-        if (l > 0) {
-          i.style.left = `-${l * i.clientWidth + l * marginValues}px`;
+        itemWidth = parseInt(i.clientWidth) +
+       parseInt(window.getComputedStyle(i).marginLeft) + 
+      parseInt(window.getComputedStyle(i).marginRight) + 
+      parseInt(window.getComputedStyle(i).paddingLeft) + 
+      parseInt(window.getComputedStyle(i).paddingRight);
+        if (count <= items.length) {
+          console.log("girdi!");
+          i.style.transform = `translateX(-${ l * itemWidth}px)`;
           leftArrow.style.display = "block";
         }
-        if (l == items.length - 3) {
-          i.style.left = "0px";
-          l = 0;
-          leftArrow.style.display = "none";
-        }
+        if(count > items.length)
+          {
+            l= 0;
+            count = tempCount;
+          i.style.transform = `translateX(-${ l * itemWidth}px)`;
+          // leftArrow.style.display = "none";
+          rightArrow.style.display = "block";
+          }
+      
       }
+   
     }
 
     function moveLeft() {
       l--;
-
+      console.log("count: "+count);
+      console.log("l: "+l);
       for (var i of items) {
-        const marginValues =
-          parseInt(window.getComputedStyle(i).marginLeft) +
-          parseInt(window.getComputedStyle(i).marginRight);
-        // const leftValue = parseInt(i.style.left);
-        if (l == 0) {
-          // console.log("girdi 0");
-          i.style.left = "0px";
-          leftArrow.style.display = "none";
-        }
-        if (l > 0) {
-          console.log("girdi >0");
-          console.log(l);
-          console.log(i.style.left);
-          let left = String(i.style.left);
-          left = parseInt(left.replace("px", ""));
-          console.log(left);
-          console.log(left + i.clientWidth);
-          i.style.left = `${left + i.clientWidth + l * marginValues}px`;
-        }
+        itemWidth = parseInt(i.clientWidth) +
+       parseInt(window.getComputedStyle(i).marginLeft) + 
+      parseInt(window.getComputedStyle(i).marginRight) + 
+      parseInt(window.getComputedStyle(i).paddingLeft) + 
+      parseInt(window.getComputedStyle(i).paddingRight);
         if (l < 0) {
-          l = items.length - 3;
-          console.log(l * i.clientWidth - marginValues * items.length);
-          i.style.left = `-${
-              l * i.clientWidth - marginValues * items.length
-            }px`;
-          return;
+          i.style.transform = `translateX(-${ (l * itemWidth) + count * itemWidth}px)`;
+          leftArrow.style.display = "block";
+          l = items.length - tempCount;
+          count = items.length;
         }
-        console.log(l);
+        else
+          {
+          i.style.transform = `translateX(-${ l * itemWidth}px)`;
+          leftArrow.style.display = "block";
+          rightArrow.style.display = "block";
+          }
+      
       }
     }
   </script>
